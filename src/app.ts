@@ -26,6 +26,8 @@ const startBot = (key: string) => {
     }
     await saveChats(chatId)
     bot.sendMessage(chatId, '小助手订阅成功。')
+    console.log('New chat id: ' + chatId)
+    console.log('Current chat ids: ' + chats)
   })
 
   reminderLoop(bot)
@@ -43,14 +45,19 @@ const reminderLoop = (bot: TelegramBot) => {
       sendReminder(bot)
       nextReminder()
     }, until)
+    console.log('Scheduled next reminder: +' + until / 1000)
   }
   nextReminder()
 }
 
 const sendReminder = (bot: TelegramBot) => {
-  chats.map((chatId) =>
-    bot.sendPhoto(chatId, 'https://i.imgur.com/QkinmQn.jpg'),
-  )
+  chats.map(async (chatId) => {
+    try {
+      await bot.sendPhoto(chatId, 'https://i.imgur.com/QkinmQn.jpg')
+    } catch (e) {
+      console.log(`Send reminder to ${chatId} error: ${e.message}`)
+    }
+  })
 }
 
 program.option('-k, --key <api_key>', 'telegram bot api key')
@@ -66,7 +73,7 @@ if (program.key) {
 loadChats()
   .then((r: number[]) => {
     chats = r
-    console.log(chats)
+    console.log('Chat ids loaded from file: ' + chats)
   })
   .catch(() => console.log('Chats file not found. No chat ids loaded.'))
   .then(() => startBot(APIKey))
