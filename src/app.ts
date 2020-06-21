@@ -2,6 +2,11 @@ import * as TelegramBot from 'node-telegram-bot-api'
 import { program } from 'commander'
 import { promises as fs } from 'fs'
 
+const imgUrls = [
+  'https://i.imgur.com/QkinmQn.jpg',
+  'https://i.imgur.com/fdrJwZel.jpg',
+]
+
 const saveChats = async (chatId: number) => {
   chats.push(chatId)
   await fs.appendFile('chats.txt', chatId.toString() + '\n')
@@ -53,7 +58,8 @@ const reminderLoop = (bot: TelegramBot) => {
 const sendReminder = (bot: TelegramBot) => {
   chats.map(async (chatId) => {
     try {
-      await bot.sendPhoto(chatId, 'https://i.imgur.com/QkinmQn.jpg')
+      const rand = Math.floor(Math.random() * 2)
+      await bot.sendPhoto(chatId, imgUrls[rand])
     } catch (e) {
       console.log(`Send reminder to ${chatId} error: ${e.message}`)
     }
