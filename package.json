@@ -9,7 +9,7 @@
   "license": "MIT",
   "repository": "https://github.com/llc1123/telegram-bcr-potion-bot",
   "dependencies": {
-    "commander": "^5.1.0",
+    "commander": "^6.0.0",
     "node-telegram-bot-api": "^0.50.0"
   },
   "devDependencies": {
