@@ -5,6 +5,8 @@ import { promises as fs } from 'fs'
 const imgUrls = [
   'https://i.imgur.com/QkinmQn.jpg',
   'https://i.imgur.com/fdrJwZel.jpg',
+  'https://i.imgur.com/xcXRnha.png',
+  'https://i.imgur.com/nD0YuuF.png',
 ]
 
 const saveChats = async (chatId: number) => {
@@ -58,7 +60,7 @@ const reminderLoop = (bot: TelegramBot) => {
 const sendReminder = (bot: TelegramBot) => {
   chats.map(async (chatId) => {
     try {
-      const rand = Math.floor(Math.random() * 2)
+      const rand = Math.floor(Math.random() * imgUrls.length)
       await bot.sendPhoto(chatId, imgUrls[rand])
     } catch (e) {
       console.log(`Send reminder to ${chatId} error: ${e.message}`)
