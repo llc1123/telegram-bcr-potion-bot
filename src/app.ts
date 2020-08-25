@@ -48,8 +48,8 @@ const reminderLoop = (bot: TelegramBot) => {
     const now = new Date()
     const until =
       (((baseDate.getTime() - now.getTime()) % interval) + interval) % interval
-    setTimeout(() => {
-      sendReminder(bot)
+    setTimeout(async () => {
+      await sendReminder(bot)
       nextReminder()
     }, until)
     console.log('Scheduled next reminder: +' + until / 1000)
@@ -57,16 +57,17 @@ const reminderLoop = (bot: TelegramBot) => {
   nextReminder()
 }
 
-const sendReminder = (bot: TelegramBot) => {
-  chats.map(async (chatId) => {
-    try {
-      const rand = Math.floor(Math.random() * imgUrls.length)
-      await bot.sendPhoto(chatId, imgUrls[rand])
-    } catch (e) {
-      console.log(`Send reminder to ${chatId} error: ${e.message}`)
-    }
-  })
-}
+const sendReminder = async (bot: TelegramBot) =>
+  Promise.all(
+    chats.map(async (chatId) => {
+      try {
+        const rand = Math.floor(Math.random() * imgUrls.length)
+        await bot.sendPhoto(chatId, imgUrls[rand])
+      } catch (e) {
+        console.log(`Send reminder to ${chatId} error: ${e.message}`)
+      }
+    }),
+  )
 
 program.option('-k, --key <api_key>', 'telegram bot api key')
 program.parse(process.argv)
