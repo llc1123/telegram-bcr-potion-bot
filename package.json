@@ -10,7 +10,7 @@
   "repository": "https://github.com/llc1123/telegram-bcr-potion-bot",
   "dependencies": {
     "commander": "^6.2.1",
-    "node-telegram-bot-api": "^0.51.0"
+    "node-telegram-bot-api": "^0.52.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.37",
